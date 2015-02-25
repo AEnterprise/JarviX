@@ -9,3 +9,9 @@ repositories {
 dependencies {
 	compile project(":JarviX-Lib")
 }
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'jarvix.JarviX'
+	}
+}
