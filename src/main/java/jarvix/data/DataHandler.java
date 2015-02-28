@@ -46,9 +46,23 @@ public class DataHandler {
 			try {
 				dataMap.put(name, JarviX.gson.fromJson(new FileReader(new File(JarviX.CONFIG, dataLocs.get(name))), clazz));
 			} catch (FileNotFoundException e) {
-				throw new RuntimeException(String.format("the file (%s) doesn't seem to exist", dataLocs.get(name)), e);
+				createDefaultData(name);
+				loadData();
 			}
 		});
+	}
+
+	private void createDefaultData(String name) {
+		File json = new File(JarviX.CONFIG, dataLocs.get(name));
+		try {
+			Files.createParentDirs(json);
+			json.createNewFile();
+			Writer writer = new FileWriter(json);
+			writer.write(JarviX.gson.toJson(dataClasses.get(name)));
+			writer.close();
+		} catch (IOException e) {
+			//TODO: log
+		}
 	}
 
 	public void saveData() {
@@ -62,7 +76,7 @@ public class DataHandler {
 			Files.createParentDirs(backup);
 			Files.copy(json, backup);
 			Writer writer = new FileWriter(json);
-			writer.write(JarviX.gson.toJson(dataMap.get(name)));
+			writer.write(JarviX.gson.toJson(dataClasses.get(name)));
 			writer.close();
 		} catch (IOException e) {
 			//TODO: log
