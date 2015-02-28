@@ -1,50 +1,61 @@
 package jarvix.data;
 
-import java.util.List;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+
+import jarvix.JarviX;
 
 public class DataHandler {
 
-	protected static Map<String, Class<? extends JsonData>> dataClasses = Maps.newHashMap();
-	protected static List<JsonData> dataInstances = Lists.newArrayList();
-	protected static Map<String, IDataType> data = Maps.newHashMap();
+	private static Map<String, Class<? extends IDataType>> dataClasses = Maps.newHashMap();
+	private static Map<String, String> dataLocs = Maps.newHashMap();
+	private static Map<String, IDataType> dataMap = Maps.newHashMap();
 
-	public static IDataType getDataByName(String name) {
-		if (data.containsKey(name))
-			return data.get(name);
-
-		if (dataClasses.containsKey(name))
-			return setupDataType(name);
-
-		return null;
+	public static void registerData(String name, Class<? extends IDataType> data) {
+		dataClasses.put(name, data);
+		dataLocs.put(name, String.format("%s.json", name));
 	}
 
-	public static IDataType setupDataType(String name) {
-		try {
-			JsonData jsonData = dataClasses.get(name).newInstance();
-			jsonData.init();
-			dataInstances.add(jsonData);
-			IDataType dataType = jsonData.data();
-			data.put(name, dataType);
-			return dataType;
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+	public static void registerData(String name, String loc, Class<? extends IDataType> data) {
+		dataClasses.put(name, data);
+		dataLocs.put(name, String.format("%s/%s.json", loc, name));
 	}
 
-	public static void addData(String name, Class<? extends JsonData> dataClass) {
-		dataClasses.put(name, dataClass);
+	public static <T extends IDataType> T getData(String name, Class<T> type) {
+		return type.cast(dataMap.get(name));
+	}
+
+	public static void loadData() {
+		dataClasses.forEach((name, clazz) -> {
+			try {
+				dataMap.put(name, JarviX.gson.fromJson(new FileReader(new File(JarviX.CONFIG, dataLocs.get(name))), clazz));
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(String.format("the file (%s) doesn't seem to exist", dataLocs.get(name)), e);
+			}
+		});
 	}
 
 	public static void saveData() {
-		for (JsonData data : dataInstances)
-			data.saveData();
+		dataMap.forEach((name, data) -> {
+			try {
+				File json = new File(JarviX.CONFIG, dataLocs.get(name));
+				File backup = new File(JarviX.CONFIG, String.format("backup/%s", dataLocs.get(name)));
+				Files.createParentDirs(backup);
+				Files.copy(json, backup);
+				Writer writer = new FileWriter(json);
+				writer.write(JarviX.gson.toJson(dataMap.get(name)));
+				writer.close();
+			} catch (IOException e) {
+				//TODO: log
+			}
+		});
 	}
-
 }
