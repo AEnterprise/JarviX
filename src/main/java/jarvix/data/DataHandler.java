@@ -44,18 +44,20 @@ public class DataHandler {
 	}
 
 	public static void saveData() {
-		dataMap.forEach((name, data) -> {
-			try {
-				File json = new File(JarviX.CONFIG, dataLocs.get(name));
-				File backup = new File(JarviX.CONFIG, String.format("backup/%s", dataLocs.get(name)));
-				Files.createParentDirs(backup);
-				Files.copy(json, backup);
-				Writer writer = new FileWriter(json);
-				writer.write(JarviX.gson.toJson(dataMap.get(name)));
-				writer.close();
-			} catch (IOException e) {
-				//TODO: log
-			}
-		});
+		dataMap.keySet().forEach(DataHandler::saveData);
+	}
+
+	public static void saveData(String name) {
+		try {
+			File json = new File(JarviX.CONFIG, dataLocs.get(name));
+			File backup = new File(JarviX.CONFIG, String.format("backup/%s", dataLocs.get(name)));
+			Files.createParentDirs(backup);
+			Files.copy(json, backup);
+			Writer writer = new FileWriter(json);
+			writer.write(JarviX.gson.toJson(dataMap.get(name)));
+			writer.close();
+		} catch (IOException e) {
+			//TODO: log
+		}
 	}
 }
