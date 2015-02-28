@@ -15,25 +15,33 @@ import jarvix.JarviX;
 
 public class DataHandler {
 
-	private static Map<String, Class<? extends IDataType>> dataClasses = Maps.newHashMap();
-	private static Map<String, String> dataLocs = Maps.newHashMap();
-	private static Map<String, IDataType> dataMap = Maps.newHashMap();
+	public static DataHandler INSTANCE = new DataHandler();
 
-	public static void registerData(String name, Class<? extends IDataType> data) {
+	private Map<String, Class<? extends IDataType>> dataClasses;
+	private Map<String, String> dataLocs;
+	private Map<String, IDataType> dataMap;
+
+	public DataHandler() {
+		dataClasses = Maps.newHashMap();
+		dataLocs = Maps.newHashMap();
+		dataMap = Maps.newHashMap();
+	}
+
+	public void registerData(String name, Class<? extends IDataType> data) {
 		dataClasses.put(name, data);
 		dataLocs.put(name, String.format("%s.json", name));
 	}
 
-	public static void registerData(String name, String loc, Class<? extends IDataType> data) {
+	public void registerData(String name, String loc, Class<? extends IDataType> data) {
 		dataClasses.put(name, data);
 		dataLocs.put(name, String.format("%s/%s.json", loc, name));
 	}
 
-	public static <T extends IDataType> T getData(String name, Class<T> type) {
+	public <T extends IDataType> T getData(String name, Class<T> type) {
 		return type.cast(dataMap.get(name));
 	}
 
-	public static void loadData() {
+	public void loadData() {
 		dataClasses.forEach((name, clazz) -> {
 			try {
 				dataMap.put(name, JarviX.gson.fromJson(new FileReader(new File(JarviX.CONFIG, dataLocs.get(name))), clazz));
@@ -43,11 +51,11 @@ public class DataHandler {
 		});
 	}
 
-	public static void saveData() {
-		dataMap.keySet().forEach(DataHandler::saveData);
+	public void saveData() {
+		dataMap.keySet().forEach(this::saveData);
 	}
 
-	public static void saveData(String name) {
+	public void saveData(String name) {
 		try {
 			File json = new File(JarviX.CONFIG, dataLocs.get(name));
 			File backup = new File(JarviX.CONFIG, String.format("backup/%s", dataLocs.get(name)));
