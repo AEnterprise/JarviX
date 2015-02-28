@@ -8,9 +8,10 @@ import com.google.gson.GsonBuilder;
 import org.pircbotx.PircBotX;
 
 import jarvix.bot.BotManager;
-import jarvix.lib.Constants;
-import jarvix.data.BotInfo;
+import jarvix.data.BotData;
 import jarvix.data.DataHandler;
+import jarvix.data.ServerData;
+import jarvix.lib.Constants;
 
 public class JarviX {
 
@@ -19,7 +20,7 @@ public class JarviX {
 
 	public static void main(String[] args) {
 		setupGson();
-
+		loadAllConfigs();
 	}
 
 	private static void setupGson() {
@@ -29,7 +30,8 @@ public class JarviX {
 	}
 
 	private static void loadAllConfigs() {
-		DataHandler.INSTANCE.registerData(Constants.Data.BOT_INFO_NAME, BotInfo.class);
+		DataHandler.INSTANCE.registerData(Constants.Data.BOT_INFO_NAME, BotData.class);
+		DataHandler.INSTANCE.registerData(Constants.Data.SERVER_DATA_NAME, ServerData.class);
 		DataHandler.INSTANCE.loadData();
 	}
 

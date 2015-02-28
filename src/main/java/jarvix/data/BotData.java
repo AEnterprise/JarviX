@@ -1,6 +1,6 @@
 package jarvix.data;
 
-public class BotInfo implements IDataType {
+public class BotData implements IDataType {
 
 	public String name = "";
 	public String password = "";

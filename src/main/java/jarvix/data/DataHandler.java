@@ -58,9 +58,9 @@ public class DataHandler {
 			Files.createParentDirs(json);
 			json.createNewFile();
 			Writer writer = new FileWriter(json);
-			writer.write(JarviX.gson.toJson(dataClasses.get(name)));
+			writer.write(JarviX.gson.toJson(dataClasses.get(name).cast(dataClasses.get(name).newInstance())));
 			writer.close();
-		} catch (IOException e) {
+		} catch (IOException | InstantiationException | IllegalAccessException e) {
 			//TODO: log
 		}
 	}
@@ -76,7 +76,7 @@ public class DataHandler {
 			Files.createParentDirs(backup);
 			Files.copy(json, backup);
 			Writer writer = new FileWriter(json);
-			writer.write(JarviX.gson.toJson(dataClasses.get(name)));
+			writer.write(JarviX.gson.toJson(dataMap.get(name)));
 			writer.close();
 		} catch (IOException e) {
 			//TODO: log
