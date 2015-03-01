@@ -18,6 +18,9 @@ public class JarviX {
 	public static final File CONFIG = new File("config");
 	public static Gson gson;
 
+	public static BotData botData;
+	public static ServerData serverData;
+
 	public static void main(String[] args) {
 		setupGson();
 		loadAllConfigs();
@@ -30,9 +33,12 @@ public class JarviX {
 	}
 
 	private static void loadAllConfigs() {
-		DataHandler.INSTANCE.registerData(Constants.Data.BOT_INFO_NAME, BotData.class);
+		DataHandler.INSTANCE.registerData(Constants.Data.BOT_DATA_NAME, BotData.class);
 		DataHandler.INSTANCE.registerData(Constants.Data.SERVER_DATA_NAME, ServerData.class);
 		DataHandler.INSTANCE.loadData();
+		botData = DataHandler.INSTANCE.getData(Constants.Data.BOT_DATA_NAME, BotData.class);
+		serverData = DataHandler.INSTANCE.getData(Constants.Data.SERVER_DATA_NAME, ServerData.class);
+
 	}
 
 	public static PircBotX getBot() {
