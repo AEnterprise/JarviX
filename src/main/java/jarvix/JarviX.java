@@ -24,6 +24,7 @@ public class JarviX {
 	public static void main(String[] args) {
 		setupGson();
 		loadAllConfigs();
+		loadAndStartBot();
 	}
 
 	private static void setupGson() {
@@ -38,7 +39,11 @@ public class JarviX {
 		DataHandler.INSTANCE.loadData();
 		botData = DataHandler.INSTANCE.getData(Constants.Data.BOT_DATA_NAME, BotData.class);
 		serverData = DataHandler.INSTANCE.getData(Constants.Data.SERVER_DATA_NAME, ServerData.class);
+	}
 
+	private static void loadAndStartBot() {
+		BotManager.INSTANCE.buildBot();
+		BotManager.INSTANCE.startBot();
 	}
 
 	public static PircBotX getBot() {
