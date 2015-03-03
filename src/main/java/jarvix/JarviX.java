@@ -8,6 +8,8 @@ import com.google.gson.GsonBuilder;
 import org.pircbotx.PircBotX;
 
 import jarvix.bot.BotManager;
+import jarvix.command.CommandHandler;
+import jarvix.command.CommandJoin;
 import jarvix.data.BotData;
 import jarvix.data.DataHandler;
 import jarvix.data.ServerData;
@@ -24,6 +26,7 @@ public class JarviX {
 	public static void main(String[] args) {
 		setupGson();
 		loadAllConfigs();
+		registerCommands();
 		loadAndStartBot();
 	}
 
@@ -44,6 +47,10 @@ public class JarviX {
 	private static void loadAndStartBot() {
 		BotManager.INSTANCE.buildBot();
 		BotManager.INSTANCE.startBot();
+	}
+
+	private static void registerCommands() {
+		CommandHandler.registerCommand(new CommandJoin());
 	}
 
 	public static PircBotX getBot() {
