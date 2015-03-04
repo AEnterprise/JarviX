@@ -1,9 +1,12 @@
 package jarvix.bot;
 
 import java.nio.charset.Charset;
+import java.util.List;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
+import org.pircbotx.Channel;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 
@@ -18,6 +21,8 @@ public class BotManager {
 	public static BotManager INSTANCE = new BotManager();
 
 	public PircBotX bot;
+
+	public List<String> channels = Lists.newArrayList();
 
 	public void buildBot() {
 		Configuration.Builder<PircBotX> builder = new Configuration.Builder<PircBotX>();
@@ -52,5 +57,17 @@ public class BotManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void joinChannel(String name, String key) {
+		if (Strings.isNullOrEmpty(key))
+			bot.sendIRC().joinChannel(name);
+		else
+			bot.sendIRC().joinChannel(name, key);
+
+	}
+
+	public void leaveChannel(String channel) {
+		bot.sendRaw().rawLine("PART " + channel);
 	}
 }

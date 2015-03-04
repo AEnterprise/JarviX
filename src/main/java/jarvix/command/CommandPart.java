@@ -9,25 +9,23 @@ import org.pircbotx.User;
 
 import jarvix.JarviX;
 
-public class CommandJoin implements ICommand {
+public class CommandPart implements ICommand {
 
 	@Override
 	public String getName() {
-		return "join";
+		return "part";
 	}
 
 	@Override
 	public List<String> getAlliases() {
-		return Arrays.asList("j");
+		return Arrays.asList("p", "leave");
 	}
 
 	@Override
 	public void processCommand(PircBotX bot, User user, Channel channel, String[] args) {
-		if (args.length == 1)
-			JarviX.joinChannel(args[0]);
-		else if (args.length == 2)
-			JarviX.joinChannel(args[0], args[1]);
-		else
-			channel.send().message("must specify a channel");
+		if (args.length == 0)
+			channel.send().part();
+		else if (args.length == 1)
+			JarviX.leaveChannel(args[0]);
 	}
 }

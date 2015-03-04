@@ -10,6 +10,7 @@ import org.pircbotx.PircBotX;
 import jarvix.bot.BotManager;
 import jarvix.command.CommandHandler;
 import jarvix.command.CommandJoin;
+import jarvix.command.CommandPart;
 import jarvix.data.BotData;
 import jarvix.data.DataHandler;
 import jarvix.data.ServerData;
@@ -51,9 +52,22 @@ public class JarviX {
 
 	private static void registerCommands() {
 		CommandHandler.registerCommand(new CommandJoin());
+		CommandHandler.registerCommand(new CommandPart());
 	}
 
 	public static PircBotX getBot() {
 		return BotManager.INSTANCE.bot;
+	}
+
+	public static void joinChannel(String name, String key) {
+		BotManager.INSTANCE.joinChannel(name, key);
+	}
+
+	public static void joinChannel(String name) {
+		joinChannel(name, null);
+	}
+
+	public static void leaveChannel(String channel) {
+		BotManager.INSTANCE.leaveChannel(channel);
 	}
 }
