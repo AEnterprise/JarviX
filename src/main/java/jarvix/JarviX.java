@@ -11,6 +11,7 @@ import jarvix.bot.BotManager;
 import jarvix.command.CommandHandler;
 import jarvix.command.CommandJoin;
 import jarvix.command.CommandPart;
+import jarvix.command.CommandSource;
 import jarvix.data.BotData;
 import jarvix.data.DataHandler;
 import jarvix.data.ServerData;
@@ -53,6 +54,7 @@ public class JarviX {
 	private static void registerCommands() {
 		CommandHandler.registerCommand(new CommandJoin());
 		CommandHandler.registerCommand(new CommandPart());
+		CommandHandler.registerCommand(new CommandSource());
 	}
 
 	public static PircBotX getBot() {
