@@ -1,15 +1,15 @@
 package jarvix.bot;
 
 import java.nio.charset.Charset;
-import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
-import org.pircbotx.Channel;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 
+import jarvix.JarviX;
 import static jarvix.JarviX.botData;
 import static jarvix.JarviX.serverData;
 import jarvix.data.ServerData;
@@ -22,7 +22,7 @@ public class BotManager {
 
 	public PircBotX bot;
 
-	public List<String> channels = Lists.newArrayList();
+	public Map<String, ServerData.ChannelData> channels = Maps.newHashMap();
 
 	public void buildBot() {
 		Configuration.Builder<PircBotX> builder = new Configuration.Builder<PircBotX>();
@@ -45,6 +45,7 @@ public class BotManager {
 					builder.addAutoJoinChannel(name);
 				else
 					builder.addAutoJoinChannel(name, data.password);
+				addChannelToList(name, data.password);
 			}
 		}
 
@@ -64,10 +65,28 @@ public class BotManager {
 			bot.sendIRC().joinChannel(name);
 		else
 			bot.sendIRC().joinChannel(name, key);
-
+		addChannelToList(name, key);
 	}
 
 	public void leaveChannel(String channel) {
 		bot.sendRaw().rawLine("PART " + channel);
+	}
+
+	private void addChannelToList(String name, String password) {
+		password = Strings.isNullOrEmpty(password) ? "" : password;
+		ServerData.ChannelData data = new ServerData.ChannelData();
+		data.name = name;
+		data.password = password;
+		channels.put(name, data);
+	}
+
+	public void save() {
+		JarviX.serverData.channels = new ServerData.ChannelData[channels.size()];
+		int i = 0;
+
+		for (ServerData.ChannelData data : channels.values()) {
+			JarviX.serverData.channels[i] = data;
+			i++;
+		}
 	}
 }
