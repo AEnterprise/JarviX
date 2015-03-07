@@ -10,6 +10,7 @@ import org.pircbotx.PircBotX;
 import jarvix.bot.BotManager;
 import jarvix.command.CommandHandler;
 import jarvix.command.CommandJoin;
+import jarvix.command.CommandKill;
 import jarvix.command.CommandPart;
 import jarvix.command.CommandSource;
 import jarvix.data.BotData;
@@ -55,6 +56,7 @@ public class JarviX {
 		CommandHandler.registerCommand(new CommandJoin());
 		CommandHandler.registerCommand(new CommandPart());
 		CommandHandler.registerCommand(new CommandSource());
+		CommandHandler.registerCommand(new CommandKill());
 	}
 
 	public static PircBotX getBot() {
@@ -71,5 +73,11 @@ public class JarviX {
 
 	public static void leaveChannel(String channel) {
 		BotManager.INSTANCE.leaveChannel(channel);
+	}
+
+	public static void quitBot() {
+		getBot().stopBotReconnect();
+		getBot().sendIRC().quitServer();
+		BotManager.INSTANCE.save();
 	}
 }
