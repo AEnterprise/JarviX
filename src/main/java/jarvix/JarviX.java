@@ -8,13 +8,13 @@ import com.google.gson.GsonBuilder;
 import org.pircbotx.PircBotX;
 
 import jarvix.bot.BotManager;
-import jarvix.command.CommandHandler;
+import jarvix.command.handler.CommandHandler;
 import jarvix.command.CommandJoin;
 import jarvix.command.CommandKill;
 import jarvix.command.CommandPart;
 import jarvix.command.CommandSource;
 import jarvix.data.BotData;
-import jarvix.data.DataHandler;
+import jarvix.data.handler.DataHandler;
 import jarvix.data.ServerData;
 import jarvix.lib.Constants;
 

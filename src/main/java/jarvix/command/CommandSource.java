@@ -7,6 +7,8 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import jarvix.command.handler.ICommand;
+
 public class CommandSource implements ICommand {
 
 	@Override

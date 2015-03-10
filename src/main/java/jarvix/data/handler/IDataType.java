@@ -1,4 +1,4 @@
-package jarvix.data;
+package jarvix.data.handler;
 
 public interface IDataType {
 

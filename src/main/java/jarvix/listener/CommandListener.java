@@ -8,8 +8,8 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import static jarvix.JarviX.botData;
-import jarvix.command.CommandHandler;
-import jarvix.command.ICommand;
+import jarvix.command.handler.CommandHandler;
+import jarvix.command.handler.ICommand;
 
 public class CommandListener extends ListenerAdapter<PircBotX> {
 

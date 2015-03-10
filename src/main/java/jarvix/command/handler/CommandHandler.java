@@ -1,4 +1,4 @@
-package jarvix.command;
+package jarvix.command.handler;
 
 import java.util.Map;
 

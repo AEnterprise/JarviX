@@ -8,6 +8,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import jarvix.JarviX;
+import jarvix.command.handler.ICommand;
 
 public class CommandJoin implements ICommand {
 

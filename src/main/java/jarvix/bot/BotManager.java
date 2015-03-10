@@ -12,7 +12,7 @@ import org.pircbotx.PircBotX;
 import jarvix.JarviX;
 import static jarvix.JarviX.botData;
 import static jarvix.JarviX.serverData;
-import jarvix.data.DataHandler;
+import jarvix.data.handler.DataHandler;
 import jarvix.data.ServerData;
 import jarvix.listener.CommandListener;
 import jarvix.listener.PrivateCommandListener;

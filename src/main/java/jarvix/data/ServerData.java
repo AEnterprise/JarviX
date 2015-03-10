@@ -1,5 +1,7 @@
 package jarvix.data;
 
+import jarvix.data.handler.IDataType;
+
 public class ServerData implements IDataType {
 
 	public String name = "";
