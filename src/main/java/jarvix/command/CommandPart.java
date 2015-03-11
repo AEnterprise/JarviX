@@ -25,7 +25,7 @@ public class CommandPart implements ICommand {
 	@Override
 	public void processCommand(PircBotX bot, User user, Channel channel, String[] args) {
 		if (args.length == 0)
-			channel.send().part();
+			JarviX.leaveChannel(channel.getName());
 		else if (args.length == 1)
 			JarviX.leaveChannel(args[0]);
 	}

@@ -16,6 +16,7 @@ import jarvix.data.handler.DataHandler;
 import jarvix.data.ServerData;
 import jarvix.listener.CommandListener;
 import jarvix.listener.PrivateCommandListener;
+import jarvix.util.ChannelUtil;
 
 public class BotManager {
 
@@ -41,7 +42,7 @@ public class BotManager {
 
 		for (ServerData.ChannelData data : serverData.channels) {
 			if (!Strings.isNullOrEmpty(data.name)) {
-				String name = data.name.startsWith("#") ? data.name : "#" + data.name;
+				String name = ChannelUtil.getChannel(data.name);
 				if (Strings.isNullOrEmpty(data.password))
 					builder.addAutoJoinChannel(name);
 				else
@@ -62,6 +63,7 @@ public class BotManager {
 	}
 
 	public void joinChannel(String name, String key) {
+		name = ChannelUtil.getChannel(name);
 		if (Strings.isNullOrEmpty(key))
 			bot.sendIRC().joinChannel(name);
 		else
@@ -70,12 +72,13 @@ public class BotManager {
 	}
 
 	public void leaveChannel(String channel) {
-		bot.sendRaw().rawLine("PART " + channel);
+		bot.sendRaw().rawLine("PART " + ChannelUtil.getChannel(channel));
 	}
 
 	private void addChannelToList(String name, String password) {
 		password = Strings.isNullOrEmpty(password) ? "" : password;
 		ServerData.ChannelData data = new ServerData.ChannelData();
+		name = ChannelUtil.getChannel(name);
 		data.name = name;
 		data.password = password;
 		channels.put(name, data);
